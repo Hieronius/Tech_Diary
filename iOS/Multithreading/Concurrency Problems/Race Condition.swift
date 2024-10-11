@@ -1,24 +1,26 @@
 import Foundation
 
-let queue = DispatchQueue(label: "Queue")
-var value = 1
+let queue = DispatchQueue(label: "Queue", attributes: .concurrent)
+var value = 0
 
 func changeValue() {
-	sleep(1)
-	value += 1
+	for _ in 1...1000 {
+		value += 1
+	}
 }
 
-// 1. Изменим свойство в async
-print(value)
-queue.async {
-	changeValue()
+// Launch multiple asynchronous tasks
+let group = DispatchGroup()
 
+for _ in 1...10 {
+	group.enter()
+	queue.async {
+		changeValue()
+		group.leave()
+	}
 }
 
-// 2. Изменим свойство в sync
-print(value)
-queue.sync {
-	changeValue()
+// Wait for all tasks to complete
+group.wait()
 
-}
-print(value)
+print("Final value: \(value)")
