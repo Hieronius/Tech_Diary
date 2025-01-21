@@ -1,22 +1,30 @@
 import Foundation
 
-final class Stack<T> {
-	private var stack: [T] = []
+public struct Stack<Element> {
 
-	func push(_ item: T) {
-		stack.append(item)
+	// O(n) Memory
+	private var storage: [Element] = []
+
+	public init(_ elements: [Element]) {
+		storage = elements
 	}
 
-	func pop() -> T {
-		stack.removeLast()
+	// O(1)
+	public mutating func push(_ element: Element) {
+		storage.append(element)
 	}
 
-	func peek() -> T? {
-		stack.last
+	// O(n)
+	@discardableResult
+	public mutating func pop() -> Element? {
+		storage.popLast()
 	}
 
-	func execute(_ action: (T) -> Void) {
-		let item = pop()
-		action(item)
+	public func peek() -> Element? {
+		storage.last
+	}
+
+	public var isEmpty: Bool {
+		peek() == nil
 	}
 }
