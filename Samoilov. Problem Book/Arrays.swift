@@ -65,7 +65,7 @@ let currencySum = currencyAr.reduce(0, +)
 
 // MARK: 3. Arrays. Advanced
 
-// 1.
+// MARK: 1
 
 var country1 = "France"
 var country2 = "England"
@@ -103,7 +103,7 @@ checkString(country8)
 checkString(country9)
 checkString(country10)
 
-// 2. Linear Sort
+// MARK: 2. Linear Sort
 
 var values = [5, 10, 1, 100, 25, 8, 10, 95, 3, 2, 37, 49]
 
@@ -133,4 +133,139 @@ func linearSort(_ array: [Int]) -> [Int] {
 		minValue = tempAr[leftIndex]
 	}
 	return tempAr
+}
+
+// MARK: Bubble sort
+
+func bubbleSort(_ array: inout [Int]) -> [Int] {
+
+
+	for iteration in 1...array.count {
+
+		var swapped = false
+		var leftIndex = 0
+		var rightIndex = leftIndex + 1
+
+		while leftIndex < array.count - iteration {
+
+			if array[leftIndex] > array[rightIndex] {
+				swapAt(array[leftIndex], array[rightIndex])
+				swapped = true
+
+			}
+			leftIndex += 1
+			rightIndex += 1
+		}
+		if !swapped { break }
+	}
+
+	return array
+}
+
+// MARK: Quick sort
+
+// O(n log n) for time complexity and 0(n) for space complexity (if not in place)
+func quickSort(_ array: [Int]) -> [Int] {
+
+	// base case of recursion
+	guard array.count > 1 else { return array }
+
+	let pivot = array[array.count / 2]
+
+	var leftArray: [Int] = []
+	var middleArray: [Int] = []
+	var rightArray: [Int] = []
+
+	for element in array {
+
+		if element > pivot {
+			rightArray.append(element)
+
+		} else if element < pivot {
+			leftArray.append(element)
+
+		} else if element == pivot {
+			middleArray.append(element)
+		}
+	}
+	return quickSort(leftArray) + middleArray + quickSort(rightArray)
+}
+
+// MARK: Optimised Bubble sort (Shaker Sort)
+
+func shakerSort(_ array: inout [Int]) -> [Int] {
+
+	// So the hint is to traverse an array from start to end and from end to start each iteration
+
+	for iteration in 0..<array.count - 1 {
+
+		var swapped = false
+		var leftIndex = 0
+		var rightIndex = leftIndex + 1
+
+		// Traverse from left to right
+
+		while rightIndex < array.count - iteration {
+
+			if array[leftIndex] > array[rightIndex] {
+				array.swapAt(leftIndex, rightIndex)
+				swapped = true
+			}
+			leftIndex += 1
+			rightIndex += 1
+
+		}
+
+		rightIndex = array.count - iteration - 2
+		leftIndex = rightIndex - 1
+
+		// Traverse from right to left
+
+		while leftIndex > iteration {
+
+			if array[leftIndex] > array[rightIndex] {
+				array.swapAt(leftIndex, rightIndex)
+				swapped = true
+			}
+			leftIndex -= 1
+			rightIndex -= 1
+		}
+
+		if !swapped { break }
+
+	}
+	return array
+}
+
+// MARK: Even-odd sort
+
+func evenOddSort(_ array: inout [Int]) -> [Int] {
+
+	var swapped = true
+
+	while swapped {
+
+		swapped = false
+		var evenIndex = 0
+		var oddIndex = 1
+
+		while evenIndex < array.count - 1 {
+			if array[evenIndex] > array[evenIndex + 1] {
+				array.swapAt(evenIndex, evenIndex + 1)
+				swapped = true
+			}
+			evenIndex += 2
+		}
+
+		while oddIndex < array.count - 1 {
+			if array[oddIndex] > array[oddIndex + 1] {
+				array.swapAt(oddIndex, oddIndex + 1)
+				swapped = true
+			}
+			oddIndex += 2
+		}
+
+		if !swapped { break }
+	}
+	return array
 }
